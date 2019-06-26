@@ -1,0 +1,4 @@
+[xorm] [info]  2019/06/26 18:35:24.941185 [SQL] BEGIN TRANSACTION
+[xorm] [info]  2019/06/26 18:35:24.941249 [SQL] CREATE TABLE IF NOT EXISTS "book" ("i_d" VARCHAR(255) PRIMARY KEY NOT NULL, "name" VARCHAR(255) NULL, "author" VARCHAR(255) NULL)
+[xorm] [info]  2019/06/26 18:35:24.941417 [SQL] COMMIT
+[xorm] [info]  2019/06/26 18:35:32.342682 [SQL] SELECT "i_d", "name", "author" FROM "book" WHERE "i_d"=$1 LIMIT 1 []interface {}{"6"}
