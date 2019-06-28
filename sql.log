@@ -1,4 +1,7 @@
-[xorm] [info]  2019/06/26 18:35:24.941185 [SQL] BEGIN TRANSACTION
-[xorm] [info]  2019/06/26 18:35:24.941249 [SQL] CREATE TABLE IF NOT EXISTS "book" ("i_d" VARCHAR(255) PRIMARY KEY NOT NULL, "name" VARCHAR(255) NULL, "author" VARCHAR(255) NULL)
-[xorm] [info]  2019/06/26 18:35:24.941417 [SQL] COMMIT
-[xorm] [info]  2019/06/26 18:35:32.342682 [SQL] SELECT "i_d", "name", "author" FROM "book" WHERE "i_d"=$1 LIMIT 1 []interface {}{"6"}
+[xorm] [info]  2019/06/28 14:51:42.064459 [SQL] BEGIN TRANSACTION
+[xorm] [info]  2019/06/28 14:51:42.064534 [SQL] CREATE TABLE IF NOT EXISTS "Book" ("ID" VARCHAR(255) PRIMARY KEY NOT NULL, "Name" VARCHAR(255) NULL, "Author" VARCHAR(255) NULL)
+[xorm] [info]  2019/06/28 14:51:42.064730 [SQL] COMMIT
+[xorm] [info]  2019/06/28 14:52:13.008168 [SQL] SELECT "ID", "Name", "Author" FROM "Book" WHERE "ID"=$1 LIMIT 1 []interface {}{"jlklkj"}
+[xorm] [info]  2019/06/28 14:53:27.788273 [SQL] SELECT "ID", "Name", "Author" FROM "Book"
+[xorm] [info]  2019/06/28 14:53:31.651079 [SQL] SELECT "ID", "Name", "Author" FROM "Book" WHERE "ID"=$1 LIMIT 1 []interface {}{"2"}
+[xorm] [info]  2019/06/28 14:53:44.856096 [SQL] SELECT "ID", "Name", "Author" FROM "Book" WHERE "ID"=$1 LIMIT 1 []interface {}{"4"}

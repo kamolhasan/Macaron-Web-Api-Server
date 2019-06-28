@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-xorm/core"
 	"github.com/go-xorm/xorm"
 
 	"github.com/go-macaron/auth"
@@ -55,7 +56,7 @@ func Run() {
 	Engine.SetLogger(logger)
 
 	// set mapping rules
-	//Engine.SetMapper(core.SameMapper{})
+	Engine.SetMapper(core.SameMapper{})
 
 	// Create Table from structure
 	err = Engine.CreateTables(Book{})
@@ -72,6 +73,7 @@ func Run() {
 	m.Get("/books/:id", GetBook)
 	m.Post("/books", binding.Json(BookList{}), PostBook)
 	m.Post("/books/:id", binding.Json(Book{}), UpdateBook)
+	m.NotFound(NotFoundFunc)
 
 	log.Println("Server running... ...")
 	log.Println(http.ListenAndServe(":8080", m))

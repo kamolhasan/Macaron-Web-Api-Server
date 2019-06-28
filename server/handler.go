@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -9,12 +8,11 @@ import (
 )
 
 func GetBooks(ctx *macaron.Context) {
-	fmt.Println("GetBooks called!")
+	log.Println("received Get(all) request from: " + ctx.Req.RemoteAddr)
 
 	var books []Book
 	if err := Engine.Find(&books); err != nil {
-		fmt.Println("got books!")
-		panic(err)
+		ctx.JSON(http.StatusInternalServerError, err)
 	}
 	bookList := BookList{
 		Items: books,
@@ -23,6 +21,7 @@ func GetBooks(ctx *macaron.Context) {
 }
 
 func GetBook(ctx *macaron.Context) {
+	log.Println("received Get(single) request from: " + ctx.Req.RemoteAddr)
 	book := Book{
 		ID: ctx.Params("id"),
 	}
@@ -35,17 +34,45 @@ func GetBook(ctx *macaron.Context) {
 	}
 }
 
-func PostBook(ctx *macaron.Context, list BookList) string {
-	st, _ := ctx.Req.Body().String()
-
+func PostBook(ctx *macaron.Context, list BookList) {
+	log.Println("received Post request from: " + ctx.Req.RemoteAddr)
 	for _, val := range list.Items {
-		log.Println(val)
+		book := Book{
+			ID: val.ID,
+		}
+		has, err := Engine.Get(&book)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, err)
+		}
+		if !has {
+			_, err := Engine.Insert(val)
+			if err != nil {
+				ctx.JSON(http.StatusInternalServerError, err)
+			}
+		}
 	}
-	return st + "\n postbook.. called!"
+
+	var books []Book
+	if err := Engine.Find(&books); err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+	}
+	bookList := BookList{
+		Items: books,
+	}
+	ctx.JSON(http.StatusOK, bookList)
+
 }
 
-func UpdateBook(ctx *macaron.Context, book Book) string {
-	st, _ := ctx.Req.Body().String()
-	log.Println(book)
-	return st + "UpdateBook... called!"
+func UpdateBook(ctx *macaron.Context, book Book) {
+	log.Println("received Update request from: " + ctx.Req.RemoteAddr)
+
+	_, err := Engine.ID(ctx.Params("id")).Update(book)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+	}
+	ctx.JSON(http.StatusOK, book)
+}
+
+func NotFoundFunc(ctx *macaron.Context) {
+	ctx.JSON(http.StatusBadRequest, nil)
 }
